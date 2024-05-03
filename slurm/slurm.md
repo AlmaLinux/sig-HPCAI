@@ -346,8 +346,7 @@ chown munge:munge /etc/munge/munge.key
 enable and start munge service
 
 ```
-systemctl enable munge
-systemctl start munge
+systemctl enable --now munge
 ```
 
 
@@ -497,8 +496,7 @@ chown -R slurm:slurm /var/log/slurm
 Start the slurmdbd service
 
 ```
-systemctl enable slurmdbd
-systemctl start slurmdbd
+systemctl enable --now slurmdbd
 ```
 
 ### On the `master.local` machine
@@ -609,10 +607,6 @@ SlurmdDebug=info
 SlurmSchedLogFile=/var/log/slurmSched.log
 SlurmSchedLogLevel=1
 #
-#Energy consumption test
-AcctGatherEnergyType=acct_gather_energy/rapl
-AcctGatherNodeFreq=1
-#
 
 #Partitions
 PartitionName=HPC                       MaxTime=UNLIMITED Nodes=wn001  MaxNodes=1  OverSubscribe=YES AllowGRoups=hpc
@@ -626,12 +620,10 @@ NodeName=wn001 NodeAddr=X.X.X.X  CPUs=2 Sockets=1 CoresPerSocket=2 ThreadsPerCor
 Create a /etc/slurm/cgroup.conf
 
 ```
-CgroupAutomount=yes
 ConstrainCores=yes
 ConstrainRAMSpace=yes
 ConstrainSwapSpace=yes
-TaskAffinity=no
-
+ConstrainDevices=yes
 ```
 
 Enable and start the slurmctld:
@@ -657,8 +649,7 @@ scp /etc/slurm/cgroup.conf root@shadow.local:/etc/slurm/.
 Enable and start the slurmctld:
 
 ```
-systemctl enable slurmctld
-systemctl start slurmctld
+systemctl enable --now slurmctld
 ```
 
 
@@ -668,11 +659,11 @@ Setup user munge and slurm
 
 ```
 export MUNGEUSER=981
-groupadd -g $MUNGEUSER munge
-useradd  -m -c "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u $MUNGEUSER -g munge  -s /sbin/nologin munge
+groupadd -g -r $MUNGEUSER munge
+useradd  -m -c -r "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u $MUNGEUSER -g munge  -s /sbin/nologin munge
 export SlurmUSER=982
-groupadd -g $SlurmUSER slurm
-useradd  -m -c "Slurm workload manager" -d /var/lib/slurm -u $SlurmUSER -g slurm  -s /bin/bash slurm
+groupadd -g -r $SlurmUSER slurm
+useradd  -m -c -r "Slurm workload manager" -d /var/lib/slurm -u $SlurmUSER -g slurm  -s /sbin/nologin slurm
 
 ```
 
@@ -751,11 +742,11 @@ Setup user munge and slurm
 
 ```
 export MUNGEUSER=981
-groupadd -g $MUNGEUSER munge
-useradd  -m -c "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u $MUNGEUSER -g munge  -s /sbin/nologin munge
+groupadd -g -r $MUNGEUSER munge
+useradd  -m -c -r "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u $MUNGEUSER -g munge  -s /sbin/nologin munge
 export SlurmUSER=982
-groupadd -g $SlurmUSER slurm
-useradd  -m -c "Slurm workload manager" -d /var/lib/slurm -u $SlurmUSER -g slurm  -s /bin/bash slurm
+groupadd -g -r $SlurmUSER slurm
+useradd  -m -c -r "Slurm workload manager" -d /var/lib/slurm -u $SlurmUSER -g slurm  -s /sbin/nologin slurm
 
 ```
 
@@ -801,7 +792,7 @@ scp /etc/slurm/slurm.conf root@ui101.local:/etc/slurm/.
 
 Install slurm:
 ```
-yum --enablerepo=Slurm_Repo install slurm-pam_slurm slurm-libpmi slurm-slurmd slurm-contribsy
+yum --enablerepo=Slurm_Repo install slurm-pam_slurm slurm-libpmi slurm-slurmd slurm-contribs -y
 
 ```
 
