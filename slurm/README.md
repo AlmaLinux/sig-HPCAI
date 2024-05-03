@@ -120,8 +120,7 @@ exportfs -a
 
 Enable and start the nfs service:
 ```
-systemctl enable nfs
-systemctl start nfs
+systemctl enable --now nfs
 ```
 
 The machines accross the cluster must have a way to share the home folders of the users, and we will also be using NFS for this purpose.
@@ -214,9 +213,7 @@ chmod 400 /etc/munge/munge.key
 #### Enable and start munge service
 
 ```
-systemctl enable munge
-
-systemctl start munge
+systemctl enable --now munge
 
 ```
 
@@ -312,8 +309,7 @@ chown munge:munge /etc/munge/munge.key
 enable and start munge service
 
 ```
-systemctl enable munge
-systemctl start munge
+systemctl enable --now munge
 ```
 
 ### DB node
@@ -629,8 +625,7 @@ ConstrainDevices=yes
 Enable and start the slurmctld:
 
 ```
-systemctl enable slurmctld
-systemctl start slurmctld
+systemctl enable --now slurmctld
 ```
 
 ##### NOTE: Check that the slurmdbd service is running before starting the slurmctld:
@@ -689,8 +684,7 @@ scp /etc/munge/munge.key root@wn001.local:/etc/munge/.
 enable and start munge service
 
 ```
-systemctl enable munge
-systemctl start munge
+systemctl enable --now munge
 ```
 
 Create /etc/slurm folder:
@@ -717,10 +711,7 @@ chown munge:munge /etc/munge/munge.key
 Enable and and start slurmd service:
 
 ```
-systemctl enable slurmd
-
-systemctl start slurmd
-
+systemctl enable --now slurmd
 ```
 
 Setup /etc/pam.d/slurm:
@@ -771,8 +762,7 @@ chown munge:munge /etc/munge/munge.key
 enable and start munge service
 
 ```
-systemctl enable munge
-systemctl start munge
+systemctl enable --now munge
 ```
 
 
